@@ -10,6 +10,7 @@
 
     // Redirect to index.html, keep full original path in hash
     const newUrl = `/resource/index.html#${encodeURIComponent(path + search + hash)}`;
+    console.log("new url is ", url)
     window.location.replace(newUrl);
   </script>
 </head>
