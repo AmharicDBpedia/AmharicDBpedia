@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    const fullPath = window.location.pathname + window.location.search + window.location.hash;
+    const newUrl = '/resource/index.html#' + encodeURIComponent(fullPath);
+    window.location.replace(newUrl);
+  </script>
+</head>
+<body>
+  <p>Redirecting to viewer…</p>
+</body>
+</html>
