@@ -30,7 +30,6 @@
     let resourceURI;
     
     if (window.location.hash) {
-      // Strip the # and decode the full path to build the RDF URI
       const originalPath = decodeURIComponent(window.location.hash.slice(1));
       resourceURI = "http://am.dbpedia.org" + originalPath;
     } else {
