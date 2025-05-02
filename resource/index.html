@@ -42,8 +42,10 @@
   document.getElementById("title").textContent = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
   const encodedURI = encodeURI(resourceURI);
   const readableLabel = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
-  document.getElementById("resourceLink").innerHTML =
-  `Resource URI: <a href="${encodedURI}" target="_blank">${readableLabel}</a>`;
+ const decodedURI = decodeURIComponent(resourceURI);
+document.getElementById("resourceLink").innerHTML =
+  `Resource URI: <a href="${resourceURI}" target="_blank">${decodedURI}</a>`;
+
 
 
 
