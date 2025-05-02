@@ -11,7 +11,7 @@ The **Amharic DBpedia Chapter** is a community-driven initiative to integrate th
 
 ---
 
-## 📦 Repository Contents
+## Repository Contents
 
 - `index.html` – Landing page for the project website.
 - `amDbpediaDump/` – RDF dump files and related resources.
@@ -21,7 +21,7 @@ The **Amharic DBpedia Chapter** is a community-driven initiative to integrate th
 
 ---
 
-## 🔗 Resources
+## Resources
 
 - **Live Website**: [am.dbpedia.org](https://am.dbpedia.org)
 - **DBpedia Databus Collection**: [Amharic Chapter Collection](https://databus.dbpedia.org/purplebee/collections/am_chapter/)
