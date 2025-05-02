@@ -1,4 +1,6 @@
+This project follows the [FAIR Software](https://fair-software.eu) principles:
 
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%E2%97%8F%E2%97%8F%E2%97%8F%E2%97%8F-brightgreen)](https://fair-software.eu)
 ## 📖 Citation
 
 If you use this dataset or project, please cite it:
@@ -7,4 +9,4 @@ If you use this dataset or project, please cite it:
 
 **Citation:**
 
-> Author(s). (Year). *Title*. Zenodo. [https://doi.org/10.5281/zenodo.13357252](https://doi.org/10.5281/zenodo.13357252)
+> Author(s). (2025). *Title*. Zenodo. [https://doi.org/10.5281/zenodo.13357252](https://doi.org/10.5281/zenodo.13357252)
