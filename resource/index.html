@@ -40,8 +40,14 @@
 
   // Show the title and URI
   document.getElementById("title").textContent = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
+  const encodedURI = encodeURI(resourceURI);
+  const readableLabel = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
   document.getElementById("resourceLink").innerHTML =
-    `Resource URI: <a href="${resourceURI}" target="_blank">${resourceURI}</a>`;
+  `Resource URI: <a href="${encodedURI}" target="_blank">${readableLabel}</a>`;
+
+
+
+  
   const decodedURI = decodeURIComponent(resourceURI);
   const query = `
     SELECT DISTINCT ?predicate ?object WHERE {
