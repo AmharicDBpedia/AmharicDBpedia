@@ -42,12 +42,11 @@
   document.getElementById("title").textContent = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
   document.getElementById("resourceLink").innerHTML =
     `Resource URI: <a href="${resourceURI}" target="_blank">${resourceURI}</a>`;
-
-  // Build and send SPARQL query
+  const decodedURI = decodeURIComponent(resourceURI);
   const query = `
     SELECT DISTINCT ?predicate ?object WHERE {
-      <${resourceURI}> ?predicate ?object.
-    } LIMIT 100
+      <${decodedURI}> ?predicate ?object.
+    } 
   `;
 
   const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
