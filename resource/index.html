@@ -27,26 +27,28 @@
 </table>
 
 <script>
-    let resourceURI;
-    
-    if (window.location.hash) {
-      const originalPath = decodeURIComponent(window.location.hash.slice(1));
-      resourceURI = "http://am.dbpedia.org" + originalPath;
-    } else {
-      resourceURI = window.location.href;
-    }
+  let resourceURI;
+
+  if (window.location.hash) {
+    const originalPath = decodeURIComponent(window.location.hash.slice(1));
+    resourceURI = "http://am.dbpedia.org" + originalPath;
+  } else {
+    resourceURI = window.location.href;
+  }
 
   const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
 
-  // Show the title and URI
-  document.getElementById("title").textContent = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
-  const encodedURI = encodeURI(resourceURI);
-  const readableLabel = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
- const decodedURI = decodeURIComponent(resourceURI);
-const decodedURI = decodeURIComponent(resourceURI);
-document.getElementById("resourceLink").innerHTML =
-  `Resource URI: <a href="${decodedURI}" target="_blank">${decodedURI}</a>`;
+  // Decode for display and querying
   const decodedURI = decodeURIComponent(resourceURI);
+
+  // Set page title
+  document.getElementById("title").textContent = decodedURI.split('/').pop().replace(/_/g, ' ');
+
+  // Show full, human-readable URI as both href and text
+  document.getElementById("resourceLink").innerHTML =
+    `Resource URI: <a href="${decodedURI}" target="_blank">${decodedURI}</a>`;
+
+  // SPARQL query
   const query = `
     SELECT DISTINCT ?predicate ?object WHERE {
       <${decodedURI}> ?predicate ?object.
@@ -54,7 +56,7 @@ document.getElementById("resourceLink").innerHTML =
   `;
 
   const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
-  console.log("resource url is ", resourceURI)
+  console.log("resource url is", decodedURI);
 
   fetch(url)
     .then(res => res.json())
