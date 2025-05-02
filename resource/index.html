@@ -43,13 +43,9 @@
   const encodedURI = encodeURI(resourceURI);
   const readableLabel = decodeURIComponent(resourceURI.split('/').pop().replace(/_/g, ' '));
  const decodedURI = decodeURIComponent(resourceURI);
+const decodedURI = decodeURIComponent(resourceURI);
 document.getElementById("resourceLink").innerHTML =
-  `Resource URI: <a href="${resourceURI}" target="_blank">${decodedURI}</a>`;
-
-
-
-
-  
+  `Resource URI: <a href="${decodedURI}" target="_blank">${decodedURI}</a>`;
   const decodedURI = decodeURIComponent(resourceURI);
   const query = `
     SELECT DISTINCT ?predicate ?object WHERE {
