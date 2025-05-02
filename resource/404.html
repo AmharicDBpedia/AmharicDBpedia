@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Redirecting…</title>
+  <title>Redirecting...</title>
   <script>
-    // Preserve original path and redirect to index.html
     const path = window.location.pathname;
     const search = window.location.search;
     const hash = window.location.hash;
 
-    const newUrl = `/resource/index.html?redirected=true#${encodeURIComponent(path + search + hash)}`;
+    // Redirect to index.html, keep full original path in hash
+    const newUrl = `/resource/index.html#${encodeURIComponent(path + search + hash)}`;
     window.location.replace(newUrl);
   </script>
 </head>
