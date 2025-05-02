@@ -27,14 +27,12 @@
 </table>
 
 <script>
-  // Use the full page URL as the RDF resource URI
   let resourceURI;
-    
-    if (window.location.hash.startsWith("#/resource/")) {
-      resourceURI = "http://am.dbpedia.org" + decodeURIComponent(window.location.hash.slice(1));
-    } else {
-      resourceURI = window.location.href;
-    }
+  if (window.location.hash.startsWith("#/resource/")) {
+    resourceURI = "http://am.dbpedia.org" + decodeURIComponent(window.location.hash.slice(1));
+  } else {
+    resourceURI = window.location.href;
+  }
 
   const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
 
