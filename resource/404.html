@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    // Redirect any unknown route to /resource/index.html, keeping the URL
+    const path = window.location.pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+
+    const newUrl = `/resource/index.html?redirected=true#${encodeURIComponent(path + search + hash)}`;
+    window.location.replace(newUrl);
+  </script>
+</head>
+<body>
+  <p>Redirecting…</p>
+</body>
+</html>
