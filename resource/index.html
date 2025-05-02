@@ -44,6 +44,7 @@
   `;
 
   const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
+  console.log("url is ", url)
 
   fetch(url)
     .then(res => res.json())
