@@ -187,6 +187,25 @@
   fetch(queryURL)
     .then(res => res.text())
     .then(text => {
+      const dataUri = 'data:text/plain;charset=utf-8,' + encodeURIComponent(text);
+      const slug = decodedURI.split('/').pop();
+      const extension = format === 'turtle' ? 'ttl' : 'json';
+      const newPath = window.location.origin + '/data/' + encodeURIComponent(slug) + '.' + extension;
+
+      history.pushState({}, '', newPath);
+      document.body.innerHTML = `<pre style='white-space: pre-wrap; word-break: break-word; padding: 20px;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre>`;
+    })
+    .catch(err => {
+      document.body.innerHTML = `<pre style='color: red; padding: 20px;'>Failed to load data: ${err}</pre>`;
+      console.error(err);
+    });
+}
+
+  const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
+
+  fetch(queryURL)
+    .then(res => res.text())
+    .then(text => {
       const tbody = document.getElementById("results");
       tbody.innerHTML = `<tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>`;
     })
