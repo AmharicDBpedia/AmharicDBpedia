@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ethiopian Kings Timeline</title>
+  <script src="https://unpkg.com/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+  <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+  <style>
+    #timeline {
+      width: 100%;
+      height: 600px;
+      border: 1px solid lightgray;
+    }
+    .timeline-image {
+      height: 80px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ethiopian Kings Timeline</h2>
+  <div id="timeline"></div>
+
+  <script>
+    const rawData = [
+      {
+        person: "ዳግማዊ ምኒልክ",
+        reign: "ከ1889 እስከ 1913 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Menelik_II_-_4.jpg?width=300",
+        start: "1896-01-01",
+        end: "1920-12-31"
+      },
+      {
+        person: "ቀዳማዊ ኃይለ ሥላሴ",
+        reign: "ከ1930 እስከ 1974 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Haile_Selassie_in_full_dress_(cropped).jpg?width=300",
+        start: "1937-01-01",
+        end: "1981-12-31"
+      },
+      {
+        person: "ፋሲለደስ",
+        reign: "ከ1632 እስከ 1667 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/FasileDesUraKidaneMihret.jpg?width=300",
+        start: "1639-01-01",
+        end: "1674-12-31"
+      },
+      {
+        person: "ዓፄ ሱሰኒዮስ",
+        reign: "ከ1606 እስከ 1632 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Susenyoscastle.jpg?width=300",
+        start: "1613-01-01",
+        end: "1639-12-31"
+      },
+      {
+        person: "ዐምደ ጽዮን",
+        reign: "ከ1314-1344",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/AmdeTsionletter_VaticanLibrary.jpeg?width=300",
+        start: "1321-01-01",
+        end: "1351-12-31"
+      },
+      {
+        person: "ዓፄ ቴዎድሮስ",
+        reign: "ከ1857 እስከ 1868 ዓ.ም.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Téwodros_II_-_2.jpg?width=300",
+        start: "1864-01-01",
+        end: "1875-12-31"
+      },
+      {
+        person: "ሠርፀ ድንግል",
+        reign: "ከ1555 እስከ 1589 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/GuzaraCastle1.jpg?width=300",
+        start: "1562-01-01",
+        end: "1596-12-31"
+      },
+      {
+        person: "ንዋየ ክርስቶስ",
+        reign: "ከ1344 እስከ 1372 እ.ኤ.አ.",
+        image: "",
+        start: "1351-01-01",
+        end: "1379-12-31"
+      },
+      {
+        person: "ልብነ ድንግል",
+        reign: "ከ1581 እስከ 1590 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Lebna_Dengel.png?width=300",
+        start: "1588-01-01",
+        end: "1597-12-31"
+      },
+      {
+        person: "ይግባ ጽዮን",
+        reign: "ከ1285 እስከ 1294 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/YagbeaSionBattlingAdaSultan.jpg?width=300",
+        start: "1292-01-01",
+        end: "1301-12-31"
+      },
+      {
+        person: "ዘድንግል",
+        reign: "ከ1603 እስከ 1604 እ.ኤ.አ.",
+        image: "",
+        start: "1610-01-01",
+        end: "1611-12-31"
+      },
+      {
+        person: "ገብረ መስቀል ላሊበላ",
+        reign: "ከ1183 እስከ 1213 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Lalibala.jpg?width=300",
+        start: "1190-01-01",
+        end: "1220-12-31"
+      },
+      {
+        person: "ዓፄ በእደ ማርያም",
+        reign: "ከ1460 እስከ 1470 እ.ኤ.አ.",
+        image: "",
+        start: "1467-01-01",
+        end: "1477-12-31"
+      },
+      {
+        person: "ገላውዴዎስ",
+        reign: "ከ1523 እስከ 1561 እ.ኤ.አ.",
+        image: "",
+        start: "1530-01-01",
+        end: "1568-12-31"
+      },
+      {
+        person: "ዮሐንስ ፬ኛ",
+        reign: "ከ1874 እስከ 1881 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/Yohannesson.jpg?width=300",
+        start: "1881-01-01",
+        end: "1888-12-31"
+      },
+      {
+        person: "ዓፄ ያዕቆብ",
+        reign: "ከ1597 እስከ 1606 እ.ኤ.አ.",
+        image: "",
+        start: "1604-01-01",
+        end: "1613-12-31"
+      },
+      {
+        person: "ዓፄ በካፋ",
+        reign: "ከ1721 እስከ 1730 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/bakaffa1.jpg?width=300",
+        start: "1728-01-01",
+        end: "1737-12-31"
+      },
+      {
+        person: "ቀዳማዊ ዓፄ ኢያሱ",
+        reign: "ከ1604 እስከ 1629 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/IyasuIPalace.jpg?width=300",
+        start: "1611-01-01",
+        end: "1636-12-31"
+      },
+      {
+        person: "ሚናስ",
+        reign: "ከ1559 እስከ 1563 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/ሚናስ-ኡራኪዳነ_ምህረት.jpg?width=300",
+        start: "1566-01-01",
+        end: "1570-12-31"
+      },
+      {
+        person: "ይኩኖ አምላክ",
+        reign: "ከ1255 እስከ 1270 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/yikunoA1.jpg?width=300",
+        start: "1262-01-01",
+        end: "1277-12-31"
+      },
+      {
+        person: "ዳግማዊ ዓፄ ኢያሱ",
+        reign: "ከ1706 እስከ 1716 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/ET_Gondar_asv2018-02_img33_Kusquam.jpg?width=300",
+        start: "1713-01-01",
+        end: "1723-12-31"
+      },
+      {
+        person: "ዓፄ ዘርአ ያዕቆብ",
+        reign: "ከ1434 እስከ 1468 እ.ኤ.አ.",
+        image: "http://commons.wikimedia.org/wiki/Special:FilePath/ዘርአያዕቆብ_ከመብዓ_ጽዮን_ድርሰት.jpg?width=300",
+        start: "1441-01-01",
+        end: "1475-12-31"
+      }
+    ];
+
+    const items = new vis.DataSet(
+      rawData.map((entry, index) => ({
+        id: index,
+        content: `<img class="timeline-image" src="${entry.image || ''}"/> ${entry.person}`,
+        start: entry.start,
+        end: entry.end,
+        type: 'range'
+      }))
+    );
+
+    const container = document.getElementById('timeline');
+    const timeline = new vis.Timeline(container, items, {
+      stack: true,
+      showMajorLabels: true,
+      margin: { item: 10 },
+      orientation: 'top'
+    });
+  </script>
+</body>
+</html>
