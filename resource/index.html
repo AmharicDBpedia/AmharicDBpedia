@@ -178,10 +178,31 @@
         });
 
     function showRawData(format) {
-  const formatMap = {
-    turtle: 'text/turtle',
-    json: 'application/json'
-  };
+  
+
+  const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
+  const previousURL = window.location.href;
+
+  fetch(queryURL)
+    .then(res => res.text())
+    .then(text => {
+      const slug = decodedURI.split('/').pop();
+      const extension = format === 'turtle' ? 'ttl' : 'json';
+      const newPath = window.location.origin + '/data/' + encodeURIComponent(slug) + '.' + extension;
+
+      history.pushState({ previous: previousURL }, '', newPath);
+
+      document.body.innerHTML = `
+        <div style='padding: 1rem;'>
+          <button onclick="history.back()" class="btn btn-secondary mb-3">← Back to Resource View</button>
+          <pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[tag]))}</pre>
+        </div>`;
+    })
+    .catch(err => {
+      document.body.innerHTML = `<pre style='color: red; padding: 20px;'>Failed to load data: ${err}</pre>`;
+      console.error(err);
+    });
+};
 
   const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
 
