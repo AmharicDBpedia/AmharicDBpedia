@@ -149,14 +149,14 @@
                 grouped[predURI].values.push(objDisplay);
             });
 
-            document.getElementById("descriptionLine").innerHTML = `An Entity of Type : ${entityType || ""}, from Named Graph : <a href=\"http://am.dbpedia.org\" target=\"_blank\">http://am.dbpedia.org</a>, within Data Space : am.dbpedia.org.`;
+            document.getElementById("descriptionLine").innerHTML = `An Entity of Type : ${entityType || ""}, from Named Graph : <a href=\"http://am.dbpedia.org\" target=\"_blank\">http://am.dbpedia.org</a>, within Data Space : <a href=\"http://am.dbpedia.org\" target=\"_blank\">am.dbpedia.org</a>.`;
 
             for (const pred in grouped) {
                 const row = grouped[pred];
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td><a href="${pred}" target="_blank">${row.label}</a></td>
-                    <td>${row.values.join("<br>")}</td>
+                    <td>${row.values.join("<br><br><br>")}</td>
                 `;
                 tbody.appendChild(tr);
             }
