@@ -177,27 +177,25 @@
         });
 
     function showRawData(format) {
-  const formatMap = {
-    turtle: 'text/turtle',
-    json: 'application/json'
-  };
+        const formatMap = {
+            turtle: 'text/turtle',
+            json: 'application/ld+json'
+        };
 
-  const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
+        const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
 
-  fetch(queryURL)
-    .then(res => res.text())
-    .then(text => {
-      const tbody = document.getElementById("results");
-      tbody.innerHTML = `<tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>`;
-    })
-    .catch(err => {
-      const tbody = document.getElementById("results");
-      tbody.innerHTML = `<tr><td colspan='2'>Failed to load data: ${err}</td></tr>`;
-      console.error(err);
-    });
-};
-
-    
+        fetch(queryURL)
+            .then(res => res.text())
+            .then(text => {
+                const tbody = document.getElementById("results");
+                tbody.innerHTML = `<tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>`;
+            })
+            .catch(err => {
+                const tbody = document.getElementById("results");
+                tbody.innerHTML = `<tr><td colspan='2'>Failed to load data: ${err}</td></tr>`;
+                console.error(err);
+            });
+    }
 </script>
 </body>
 </html>
