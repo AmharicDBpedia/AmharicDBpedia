@@ -93,111 +93,128 @@
 </div>
 
 <script>
-    let resourceURI;
-    if (window.location.hash) {
-        const originalPath = decodeURIComponent(window.location.hash.slice(1));
-        resourceURI = "http://am.dbpedia.org" + originalPath;
-    } else {
-        resourceURI = window.location.href;
-    }
+let resourceURI;
+if (window.location.hash) {
+    const originalPath = decodeURIComponent(window.location.hash.slice(1));
+    resourceURI = "http://am.dbpedia.org" + originalPath;
+} else {
+    resourceURI = window.location.href;
+}
 
-    const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
-    const decodedURI = decodeURIComponent(resourceURI);
+const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
+const decodedURI = decodeURIComponent(resourceURI);
 
-    document.getElementById("aboutURI").textContent = decodedURI;
+document.getElementById("aboutURI").textContent = decodedURI;
 
-    const query = 
-        SELECT DISTINCT ?predicate ?object WHERE {
-            <${decodedURI}> ?predicate ?object.
-        } LIMIT 1000
-    ;
+const query = `
+    SELECT DISTINCT ?predicate ?object WHERE {
+        <${decodedURI}> ?predicate ?object.
+    } LIMIT 1000
+`;
 
-    const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
+const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.getElementById("results");
-            tbody.innerHTML = "";
-            if (data.results.bindings.length === 0) {
-                tbody.innerHTML = <tr><td colspan="2">No data found for this resource.</td></tr>;
-                return;
+fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        const tbody = document.getElementById("results");
+        tbody.innerHTML = "";
+        if (data.results.bindings.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="2">No data found for this resource.</td></tr>`;
+            return;
+        }
+
+        const grouped = {};
+        let entityType = "";
+
+        data.results.bindings.forEach(row => {
+            const predURI = row.predicate.value;
+            const predLabel = predURI.split('/').pop();
+            const obj = row.object;
+
+            if (predLabel === "type" && entityType === "") {
+                entityType = obj.value.split('/').pop();
             }
 
-            const grouped = {};
-            let entityType = "";
-
-            data.results.bindings.forEach(row => {
-                const predURI = row.predicate.value;
-                const predLabel = predURI.split('/').pop();
-                const obj = row.object;
-
-                if (predLabel === "type" && entityType === "") {
-                    entityType = obj.value.split('/').pop();
-                }
-
-                let objDisplay;
-                if (obj.type === "uri") {
-                    const label = decodeURIComponent(obj.value.split('/').pop().replace(/_/g, ' '));
-                    const isImage = obj.value.match(/\.(jpg|jpeg|png|gif|svg)(\?.*)?$/i);
-                    if (isImage) {
-                        objDisplay = <a href="${obj.value}" target="_blank"><img src="${obj.value}" class="inline-img" alt="Image"></a>;
-                    } else {
-                        objDisplay = <a href="${obj.value}" target="_blank">${label}</a>;
-                    }
+            let objDisplay;
+            if (obj.type === "uri") {
+                const label = decodeURIComponent(obj.value.split('/').pop().replace(/_/g, ' '));
+                const isImage = obj.value.match(/\.(jpg|jpeg|png|gif|svg)(\?.*)?$/i);
+                if (isImage) {
+                    objDisplay = `<a href="${obj.value}" target="_blank"><img src="${obj.value}" class="inline-img" alt="Image"></a>`;
                 } else {
-                    objDisplay = obj.value;
+                    objDisplay = `<a href="${obj.value}" target="_blank">${label}</a>`;
                 }
-
-                if (!grouped[predURI]) {
-                    grouped[predURI] = {
-                        label: predLabel,
-                        values: []
-                    };
-                }
-                grouped[predURI].values.push(objDisplay);
-            });
-
-            document.getElementById("descriptionLine").innerHTML =
-              An Entity of Type : ${entityType || ""}, from Named Graph : <a href="http://am.dbpedia.org" target="_blank">http://am.dbpedia.org</a>, within Data Space : <a href="http://am.dbpedia.org" target="_blank">am.dbpedia.org</a>.;
-
-            for (const pred in grouped) {
-                const row = grouped[pred];
-                const tr = document.createElement("tr");
-                tr.innerHTML = 
-                    <td><a href="${pred}" target="_blank">${row.label}</a></td>
-                    <td>${row.values.join("<br><br><br>")}</td>
-                ;
-                tbody.appendChild(tr);
+            } else {
+                objDisplay = obj.value;
             }
-        })
-        .catch(err => {
-            document.getElementById("results").innerHTML = <tr><td colspan="2">Error loading data</td></tr>;
-            console.error(err);
+
+            if (!grouped[predURI]) {
+                grouped[predURI] = {
+                    label: predLabel,
+                    values: []
+                };
+            }
+            grouped[predURI].values.push(objDisplay);
         });
 
-    function showRawData(format) {
+        document.getElementById("descriptionLine").innerHTML =
+          `An Entity of Type : ${entityType || ""}, from Named Graph : <a href="http://am.dbpedia.org" target="_blank">http://am.dbpedia.org</a>, within Data Space : <a href="http://am.dbpedia.org" target="_blank">am.dbpedia.org</a>.`;
+
+        for (const pred in grouped) {
+            const row = grouped[pred];
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><a href="${pred}" target="_blank">${row.label}</a></td>
+                <td>${row.values.join("<br><br><br>")}</td>
+            `;
+            tbody.appendChild(tr);
+        }
+    })
+    .catch(err => {
+        document.getElementById("results").innerHTML = `<tr><td colspan="2">Error loading data</td></tr>`;
+        console.error(err);
+    });
+
+function showRawData(format) {
   const formatMap = {
     turtle: 'text/turtle',
-    json: 'application/json'
+    json: 'application/ld+json'
   };
 
-  const queryURL = endpoint + '?query=' + encodeURIComponent(DESCRIBE <${decodedURI}>) + '&format=' + encodeURIComponent(formatMap[format]);
+  const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
+  const previousURL = window.location.href;
 
   fetch(queryURL)
     .then(res => res.text())
     .then(text => {
-      const tbody = document.getElementById("results");
-      tbody.innerHTML = <tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>;
+      const slug = decodedURI.split('/').pop();
+      const extension = format === 'turtle' ? 'ttl' : 'json';
+      const newPath = window.location.origin + '/data/' + encodeURIComponent(slug) + '.' + extension;
+
+      history.pushState({ previous: previousURL }, '', newPath);
+
+      let displayText = text;
+      if (format === 'json') {
+        try {
+          const parsed = JSON.parse(text);
+          displayText = JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          displayText = 'Failed to parse JSON output.';
+        }
+      }
+
+      document.body.innerHTML = `
+        <div style='padding: 1rem;'>
+          <button onclick="history.back()" class="btn btn-secondary mb-3">← Back to Resource View</button>
+          <pre style='white-space: pre-wrap; word-break: break-word;'>${displayText.replace(/[&<>]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[tag]))}</pre>
+        </div>`;
     })
     .catch(err => {
-      const tbody = document.getElementById("results");
-      tbody.innerHTML = <tr><td colspan='2'>Failed to load data: ${err}</td></tr>;
+      document.body.innerHTML = `<pre style='color: red; padding: 20px;'>Failed to load data: ${err}</pre>`;
       console.error(err);
     });
-};
-
-    
+}
 </script>
 </body>
 </html>
