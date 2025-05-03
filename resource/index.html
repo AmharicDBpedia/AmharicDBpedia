@@ -1,92 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Amharic DBpedia Resource</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    h1 { font-size: 24px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f0f0f0; }
-    a { color: blue; text-decoration: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBpedia Resource Viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <style>
+        body {
+            font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding-top: 70px;
+        }
+        .page-header {
+            background-color: #002a43;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            margin: 20px;
+        }
+        .footer {
+            background-color: #002a43;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer img {
+            max-height: 30px;
+            margin: 0 10px;
+        }
+    </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">DBpedia Am</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">SPARQL Endpoint</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Documentation</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<h1 id="title">Loading...</h1>
-<p id="resourceLink"></p>
+<div class="page-header text-center">
+    <h1 id="title">Loading Resource...</h1>
+    <p id="resourceLink"></p>
+</div>
 
-<table id="results">
-  <thead>
-    <tr><th>Predicate</th><th>Object</th></tr>
-  </thead>
-  <tbody>
-    <tr><td colspan="2">Loading data...</td></tr>
-  </tbody>
-</table>
+<div class="container table-container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="results">
+            <tr><td colspan="2">Loading data...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="footer">
+    <p>Powered by DBpedia Am | <a href="https://am.dbpedia.data.dice-research.org/sparql" class="text-white" target="_blank">SPARQL</a></p>
+</div>
 
 <script>
-  let resourceURI;
+    let resourceURI;
+    if (window.location.hash) {
+        const originalPath = decodeURIComponent(window.location.hash.slice(1));
+        resourceURI = "http://am.dbpedia.org" + originalPath;
+    } else {
+        resourceURI = window.location.href;
+    }
 
-  if (window.location.hash) {
-    const originalPath = decodeURIComponent(window.location.hash.slice(1));
-    resourceURI = "http://am.dbpedia.org" + originalPath;
-  } else {
-    resourceURI = window.location.href;
-  }
+    const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
+    const decodedURI = decodeURIComponent(resourceURI);
 
-  const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
+    document.getElementById("title").textContent = decodedURI.split('/').pop().replace(/_/g, ' ');
+    document.getElementById("resourceLink").innerHTML =
+        `<a href="${decodedURI}" target="_blank" class="text-white">${decodedURI}</a>`;
 
-  // Decode for display and querying
-  const decodedURI = decodeURIComponent(resourceURI);
+    const query = `
+        SELECT DISTINCT ?predicate ?object WHERE {
+            <${decodedURI}> ?predicate ?object.
+        } LIMIT 100
+    `;
 
-  // Set page title
-  document.getElementById("title").textContent = decodedURI.split('/').pop().replace(/_/g, ' ');
+    const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
 
-  // Show full, human-readable URI as both href and text
-  document.getElementById("resourceLink").innerHTML =
-    `Resource URI: <a href="${decodedURI}" target="_blank">${decodedURI}</a>`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById("results");
+            tbody.innerHTML = "";
 
-  // SPARQL query
-  const query = `
-    SELECT DISTINCT ?predicate ?object WHERE {
-      <${decodedURI}> ?predicate ?object.
-    } 
-  `;
+            if (data.results.bindings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2">No data found for this resource.</td></tr>`;
+                return;
+            }
 
-  const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
-  console.log("resource url is", decodedURI);
+            data.results.bindings.forEach(row => {
+                const pred = row.predicate.value;
+                const obj = row.object.value;
+                const objIsURI = row.object.type === "uri";
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.querySelector("#results tbody");
-      tbody.innerHTML = "";
-
-      if (data.results.bindings.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="2">No data found for this resource.</td></tr>`;
-        return;
-      }
-
-      data.results.bindings.forEach(row => {
-        const pred = row.predicate.value;
-        const obj = row.object.value;
-        const objIsURI = row.object.type === "uri";
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><a href="${pred}" target="_blank">${pred}</a></td>
-          <td>${objIsURI ? `<a href="${obj}" target="_blank">${obj}</a>` : obj}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    })
-    .catch(err => {
-      document.querySelector("#results tbody").innerHTML = `<tr><td colspan="2">Error loading data</td></tr>`;
-      console.error(err);
-    });
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><a href="${pred}" target="_blank">${pred}</a></td>
+                    <td>${objIsURI ? `<a href="${obj}" target="_blank">${obj}</a>` : obj}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(err => {
+            document.getElementById("results").innerHTML = `<tr><td colspan="2">Error loading data</td></tr>`;
+            console.error(err);
+        });
 </script>
-
 </body>
 </html>
