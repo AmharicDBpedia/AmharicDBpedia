@@ -3,128 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DBpedia Resource Viewer</title>
+    <title>Bootstrap Card with Navbar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
     <style>
         body {
+            background-color: #f4f4f4;
             font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
-            background-color: #f9f9f9;
-            padding-top: 70px;
-        }
-        .page-header {
-            background-color: #002a43;
-            color: white;
             padding: 20px;
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
         }
-        .table-container {
-            margin: 20px;
+        .card-img-top {
+                width: auto; /* Allow the width to scale based on the natural dimensions */
+                height: auto; /* Maintain the natural height to preserve aspect ratio */
+                max-width: 100%; /* Prevent the image from exceeding the card width */
+                max-height: 100%; /* Prevent the image from exceeding the card height */
+                display: block; /* Removes inline spacing artifacts in some browsers */
+                margin: 0 auto; /* Center the image horizontally */
+            }
+
+
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-        .footer {
-            background-color: #002a43;
+
+        .card-header {
+            background-color: rgba(0,42,67,255);
             color: white;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0; /* Ensure no margin below the header */
+        }
+
+        .card-body {
+            flex: 1;
+            margin-top: 0; /* Remove margin above the body */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
-        .footer img {
-            max-height: 30px;
-            margin: 0 10px;
+
+        .navbar {
+            flex: 1;
+            justify-content: flex-end;
         }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .dropdown-menu a {
+            color: black !important;
+        }
+
+        .navbar-toggler {
+            border-color: white;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+
+        .card-footer {
+            color: white;
+            padding: 10px; /* Adjust footer padding if needed */
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #0056b3;
+        }
+
+        .card-text {
+            color: #333;
+        }
+
+        /* Custom styles for expanded navbar */
+        .navbar-collapse.show + .navbar-toggler {
+            display: none; /* Hide the hamburger menu when navbar is expanded */
+        }
+
+        .navbar-collapse.show ~ .card-header {
+            height: auto; /* Allow the header to adjust its height when expanded */
+        }
+
+        .navbar-collapse.show {
+            padding-top: 1rem; /* Add spacing for expanded navbar */
+        }
+        
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">DBpedia Am</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">SPARQL Endpoint</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Documentation</a></li>
-            </ul>
+    <div class="card">
+        <div class="card-header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <!-- Toggler for small screens -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible menu -->
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#About">About</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="#Query">Query</a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Documentation">Documentation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Resources">Contuct us</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Languages
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">German</a></li>
+                                <li><a class="dropdown-item" href="#">Amharic</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
+        <h1 class="card-title" style="text-align: center; color: black" id="About">About The Project</h1>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg">
+                  <div class="card border-0">
+                    <div class="card-body">
+                        <img src="images/dbpedia_am_logo.png">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg">
+                  <div class="card border-0">
+                    <div class="card-body"style="text-align: justify;">
+                        <p>DBpedia is a collaborative initiative focused on extracting structured information from Wikipedia and presenting it as Linked Open Data. <br><br>
+
+                        The DBpedia Am is the Amharic chapter of DBpedia, it is part of the DBpedia internationalization effort with primary objective of allowing knowledge graph extraction from Amharic Wikipedia.<br><br>
+                        
+                        It is first sub-Saharan African language to join the internationalization efforts of DBpedia.
+                        </p>
+                        
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <h1 class="card-title" style="text-align: center; color: rgba(0,42,67,255);" id="Query">How to query Amharic DBpedia</h1>
+        <div class="card-body">
+            <div class="row" style=" margin: 2%;">
+                </div>
+                <div class="col-lg">
+                  <div class="card border-0">
+                    <div class="card-body" style="text-align: justify;">
+                        <p>DBpedia offers valuable benefits for both data owners and developers. For data owners, it provides opportunities to enhance and expand your data, explore new access methods, and increase its overall value. <br><br>
+
+                            For developers, DBpedia supplies data that can power applications and meet user needs, while also opening up possibilities for innovative uses such as integrating search descriptors with Web-scale repositories for classification. <br><br>
+                            
+                            Whether you're a beginner wanting to learn more about SPARQL or an experienced user seeking tips to optimize your queries, the documentation is a helpful resource. <br><br>
+                            
+                            Below you can find services to query our Amharic dataset. We will add more services here as they become available.
+                        </p>
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="card border-0">
+                      <div class="card-body">
+                          <img src="images/search.png">
+                          </div>
+                      </div>
+                  </div>
+                </div> -->
+                <div class="d-flex justify-content-center" style="gap: 20px; margin-bottom: 50px;">
+                    <!-- First Card -->
+                    <a href="https://am.dbpedia.data.dice-research.org/ui" target="_blank" class="text-decoration-none">
+                        <div class="card text-center" style="max-height: 200px; overflow: hidden;">
+                            <img class="card-img-top" src="images/tentris.png" alt="Card image cap" style="max-height: 150px; object-fit: contain;">
+                            <div class="card-body">
+                                <p class="card-text">Access our Tentris SPARQL endpoint for versatile query capabilities.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Documentation Section -->
+                <h1 class="card-title" style="text-align: center; color: black; margin-top: 50px;" id="Documentation">Documentation</h1>
+                
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <a href="https://example.com/qlever-endpoint" target="_blank" class="text-decoration-none">
+                                    <img src="images/book-logo.png">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                        <div class="col-lg">
+                            <div class="card border-0">
+                                <div class="card-body" style="text-align: justify;">
+                                    <p>
+                                        Here you'll find detailed documentation and guidelines to help you make the most of DBpedia. Whether you are just getting started or looking to deepen your understanding of the technical and theoretical aspects, we’ve got you covered. <br><br>
+                
+                                        Our documentation is designed to be accessible to users of all levels, with step-by-step instructions on how to query DBpedia, even if you are a beginner. <br><br>
+                                        
+                                        If you have any questions that are not addressed in our documentation, or if you have suggestions for improvement, we encourage you to reach out to us.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <h1 class="card-title" style="text-align: center; color: black; margin-top: 50px;" id="Resources">Resources</h1>
+
+                <div class="d-flex justify-content-center" style="gap: 20px; margin-bottom: 50px;">
+                    <!-- First Card -->
+                    <a href="https://mappings.dbpedia.org/index.php/Mapping_am" target="https://mappings.dbpedia.org/index.php/Mapping_am" class="text-decoration-none">
+                        <div class="card text-center" style="max-height: 200px; overflow: hidden;">
+                            <img class="card-img-top" src="images/dbpedia-torch-logo.png" alt="Card image cap" style="max-height: 150px; object-fit: contain;">
+                            <div class="card-body">
+                                <p class="card-text">Access Mappings Wiki for Amharic.</p>
+                            </div>
+                        </div>
+                    </a>
+                
+                    <!-- Second Card -->
+                    <a href="https://example.com/qlever-endpoint" target="_blank" class="text-decoration-none">
+                        <div class="card text-center" style="max-height: 200px; overflow: hidden;">
+                            <img class="card-img-top" src="images/dbpedia-torch-logo.png" alt="Card image cap" style="max-height: 150px; object-fit: contain;">
+                            <div class="card-body">
+                                <p class="card-text">Access Amharic Mapping Server.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="d-flex justify-content-center" style="gap: 20px; margin-bottom: 50px;">
+                    <!-- First Card -->
+                    <a href="https://github.com/dbpedia/extraction-framework" target="_blank" class="text-decoration-none">
+                        <div class="card text-center" style="max-height: 200px; overflow: hidden;">
+                            <img class="card-img-top" src="images/github-logo.png" alt="Card image cap" style="max-height: 150px; object-fit: contain;">
+                            <div class="card-body">
+                                <p class="card-text">Access the DIEF framework on github.</p>
+                            </div>
+                        </div>
+                    </a>
+                
+                    <!-- Second Card -->
+                    <a href="https://databus.dbpedia.org/purplebee/collections/am_chapter/" target="_blank" class="text-decoration-none">
+                        <div class="card text-center" style="max-height: 200px; overflow: hidden;">
+                            <img class="card-img-top" src="images/databus.png" alt="Card image cap" style="max-height: 150px; object-fit: contain;">
+                            <div class="card-body">
+                                <p class="card-text">Access Amharic RDF data dumps.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            
+            <!-- Contact us Section -->
+
+            <h1 class="card-title" style="text-align: center; color: black; margin-top: 50px;" id="ContactUs">Contact Us</h1>
+
+            <div class="d-flex justify-content-center mt-4">
+                <div class="card text-center" style="border: none;">
+                    <div class="card-body">
+                        <a href="https://www.linkedin.com/in/metiadanebayissa/" style="text-decoration: none;" class="card-link">Meti Bayissa</a>
+                        <a href="https://linkedin.com/in/hizkiel-mitiku-alemayehu-97306010b/" style="text-decoration: none;" class="card-link">Hizkiel Mitiku Alemayehu</a>
+                        <a href="https://www.linkedin.com/in/tilahun-abedissa-47372a9a/" style="text-decoration: none;" class="card-link">Tilahun Abedissa Taffa</a>
+                        <a href="https://www.linkedin.com/in/ricardo-usbeck/?originalSubdomain=de" style="text-decoration: none;" class="card-link">Prof. Dr. Ricardo Usbeck</a>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="card-footer text-muted">
+                <div class="d-flex justify-content-center align-items-center gap-4">
+                    <img src="images/DBpedia-Logo.png" alt="Logo 1" style="max-height: 40px; object-fit: contain;">
+                    <img src="images/GSOC_logo.png" alt="Logo 2" style="max-height: 40px; object-fit: contain;">
+                    <img src="images/leuphana_logo.png" alt="Logo 3" style="max-height: 40px; object-fit: contain;">
+                    <img src="images/upb-logo-de.svg" alt="Logo 4" style="max-height: 40px; object-fit: contain;">
+                </div>
+            </div>
+            
     </div>
-</nav>
-
-<div class="page-header text-center">
-    <h1 id="title">Loading Resource...</h1>
-    <p id="resourceLink"></p>
-</div>
-
-<div class="container table-container">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Property</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody id="results">
-            <tr><td colspan="2">Loading data...</td></tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="footer">
-    <p>Powered by DBpedia Am | <a href="https://am.dbpedia.data.dice-research.org/sparql" class="text-white" target="_blank">SPARQL</a></p>
-</div>
-
-<script>
-    let resourceURI;
-    if (window.location.hash) {
-        const originalPath = decodeURIComponent(window.location.hash.slice(1));
-        resourceURI = "http://am.dbpedia.org" + originalPath;
-    } else {
-        resourceURI = window.location.href;
-    }
-
-    const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
-    const decodedURI = decodeURIComponent(resourceURI);
-
-    document.getElementById("title").textContent = decodedURI.split('/').pop().replace(/_/g, ' ');
-    document.getElementById("resourceLink").innerHTML =
-        `<a href="${decodedURI}" target="_blank" class="text-white">${decodedURI}</a>`;
-
-    const query = `
-        SELECT DISTINCT ?predicate ?object WHERE {
-            <${decodedURI}> ?predicate ?object.
-        } LIMIT 100
-    `;
-
-    const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
-
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.getElementById("results");
-            tbody.innerHTML = "";
-
-            if (data.results.bindings.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="2">No data found for this resource.</td></tr>`;
-                return;
-            }
-
-            data.results.bindings.forEach(row => {
-                const pred = row.predicate.value;
-                const obj = row.object.value;
-                const objIsURI = row.object.type === "uri";
-
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td><a href="${pred}" target="_blank">${pred}</a></td>
-                    <td>${objIsURI ? `<a href="${obj}" target="_blank">${obj}</a>` : obj}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(err => {
-            document.getElementById("results").innerHTML = `<tr><td colspan="2">Error loading data</td></tr>`;
-            console.error(err);
-        });
-</script>
 </body>
 </html>
