@@ -106,11 +106,11 @@
 
     document.getElementById("aboutURI").textContent = decodedURI;
 
-    const query = `
+    const query = 
         SELECT DISTINCT ?predicate ?object WHERE {
             <${decodedURI}> ?predicate ?object.
         } LIMIT 1000
-    `;
+    ;
 
     const url = endpoint + '?query=' + encodeURIComponent(query) + '&format=application/sparql-results+json';
 
@@ -120,7 +120,7 @@
             const tbody = document.getElementById("results");
             tbody.innerHTML = "";
             if (data.results.bindings.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="2">No data found for this resource.</td></tr>`;
+                tbody.innerHTML = <tr><td colspan="2">No data found for this resource.</td></tr>;
                 return;
             }
 
@@ -141,9 +141,9 @@
                     const label = decodeURIComponent(obj.value.split('/').pop().replace(/_/g, ' '));
                     const isImage = obj.value.match(/\.(jpg|jpeg|png|gif|svg)(\?.*)?$/i);
                     if (isImage) {
-                        objDisplay = `<a href="${obj.value}" target="_blank"><img src="${obj.value}" class="inline-img" alt="Image"></a>`;
+                        objDisplay = <a href="${obj.value}" target="_blank"><img src="${obj.value}" class="inline-img" alt="Image"></a>;
                     } else {
-                        objDisplay = `<a href="${obj.value}" target="_blank">${label}</a>`;
+                        objDisplay = <a href="${obj.value}" target="_blank">${label}</a>;
                     }
                 } else {
                     objDisplay = obj.value;
@@ -159,43 +159,45 @@
             });
 
             document.getElementById("descriptionLine").innerHTML =
-              `An Entity of Type : ${entityType || ""}, from Named Graph : <a href="http://am.dbpedia.org" target="_blank">http://am.dbpedia.org</a>, within Data Space : <a href="http://am.dbpedia.org" target="_blank">am.dbpedia.org</a>.`;
+              An Entity of Type : ${entityType || ""}, from Named Graph : <a href="http://am.dbpedia.org" target="_blank">http://am.dbpedia.org</a>, within Data Space : <a href="http://am.dbpedia.org" target="_blank">am.dbpedia.org</a>.;
 
             for (const pred in grouped) {
                 const row = grouped[pred];
                 const tr = document.createElement("tr");
-                tr.innerHTML = `
+                tr.innerHTML = 
                     <td><a href="${pred}" target="_blank">${row.label}</a></td>
                     <td>${row.values.join("<br><br><br>")}</td>
-                `;
+                ;
                 tbody.appendChild(tr);
             }
         })
         .catch(err => {
-            document.getElementById("results").innerHTML = `<tr><td colspan="2">Error loading data</td></tr>`;
+            document.getElementById("results").innerHTML = <tr><td colspan="2">Error loading data</td></tr>;
             console.error(err);
         });
 
     function showRawData(format) {
-        const formatMap = {
-            turtle: 'text/turtle',
-            json: 'application/ld+json'
-        };
+  const formatMap = {
+    turtle: 'text/turtle',
+    json: 'application/json'
+  };
 
-        const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
+  const queryURL = endpoint + '?query=' + encodeURIComponent(DESCRIBE <${decodedURI}>) + '&format=' + encodeURIComponent(formatMap[format]);
 
-        fetch(queryURL)
-            .then(res => res.text())
-            .then(text => {
-                const tbody = document.getElementById("results");
-                tbody.innerHTML = `<tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>`;
-            })
-            .catch(err => {
-                const tbody = document.getElementById("results");
-                tbody.innerHTML = `<tr><td colspan='2'>Failed to load data: ${err}</td></tr>`;
-                console.error(err);
-            });
-    }
+  fetch(queryURL)
+    .then(res => res.text())
+    .then(text => {
+      const tbody = document.getElementById("results");
+      tbody.innerHTML = <tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>;
+    })
+    .catch(err => {
+      const tbody = document.getElementById("results");
+      tbody.innerHTML = <tr><td colspan='2'>Failed to load data: ${err}</td></tr>;
+      console.error(err);
+    });
+};
+
+    
 </script>
 </body>
 </html>
