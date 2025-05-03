@@ -11,12 +11,10 @@
             font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
             background-color: white;
             padding-top: 70px;
-            display: flex;
-            justify-content: center;
         }
         .main-container {
             max-width: 960px;
-            width: 100%;
+            margin: 0 auto;
         }
         .page-header {
             padding: 20px;
@@ -25,6 +23,9 @@
         }
         .table-container {
             margin: 20px;
+        }
+        .footer, .navbar {
+            width: 100%;
         }
         .footer {
             color: #333;
@@ -43,7 +44,6 @@
     </style>
 </head>
 <body>
-<div class="main-container">
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">DBpedia Am</a>
@@ -58,30 +58,29 @@
     </div>
 </nav>
 
-<div class="page-header">
-    <h3>About:</h3>
-    <p>An Entity of Type : Concept, from Named Graph : <a href="http://fr.dbpedia.org" target="_blank">http://fr.dbpedia.org</a>, within Data Space : fr.dbpedia.org</p>
-    <h1 id="title">Loading Resource...</h1>
-    <p id="resourceLink"></p>
-</div>
+<div class="main-container">
+    <div class="page-header">
+        <h3>About: <span id="aboutURI"></span></h3>
+        <p id="descriptionLine"></p>
+    </div>
 
-<div class="container table-container">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Property</th>
-                <th>Object</th>
-            </tr>
-        </thead>
-        <tbody id="results">
-            <tr><td colspan="2">Loading data...</td></tr>
-        </tbody>
-    </table>
+    <div class="container table-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Object</th>
+                </tr>
+            </thead>
+            <tbody id="results">
+                <tr><td colspan="2">Loading data...</td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="footer">
     <p>Powered by DBpedia Am | <a href="https://am.dbpedia.data.dice-research.org/ui" target="_blank">SPARQL</a></p>
-</div>
 </div>
 
 <script>
@@ -96,9 +95,7 @@
     const endpoint = 'https://am.dbpedia.data.dice-research.org/sparql';
     const decodedURI = decodeURIComponent(resourceURI);
 
-    document.getElementById("title").textContent = decodedURI.split('/').pop().replace(/_/g, ' ');
-    document.getElementById("resourceLink").innerHTML =
-        `<a href="${decodedURI}" target="_blank">${decodedURI}</a>`;
+    document.getElementById("aboutURI").textContent = decodedURI;
 
     const query = `
         SELECT DISTINCT ?predicate ?object WHERE {
@@ -119,12 +116,17 @@
             }
 
             const grouped = {};
+            let entityType = "";
 
             data.results.bindings.forEach(row => {
                 const predURI = row.predicate.value;
                 const predLabel = predURI.split('/').pop();
-
                 const obj = row.object;
+
+                if (predLabel === "type" && entityType === "") {
+                    entityType = obj.value.split('/').pop();
+                }
+
                 let objDisplay;
                 if (obj.type === "uri") {
                     const label = decodeURIComponent(obj.value.split('/').pop().replace(/_/g, ' '));
@@ -146,6 +148,8 @@
                 }
                 grouped[predURI].values.push(objDisplay);
             });
+
+            document.getElementById("descriptionLine").innerHTML = `An Entity of Type : ${entityType || ""}, from Named Graph : <a href=\"http://am.dbpedia.org\" target=\"_blank\">http://am.dbpedia.org</a>, within Data Space : am.dbpedia.org.`;
 
             for (const pred in grouped) {
                 const row = grouped[pred];
