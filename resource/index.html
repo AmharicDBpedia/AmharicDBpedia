@@ -45,17 +45,26 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">DBpedia Am</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="https://am.dbpedia.data.dice-research.org/ui" target="_blank">SPARQL Endpoint</a></li>
-            </ul>
-        </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">DBpedia Am</a>
+    <div class="dropdown ms-auto">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="formatDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        View Raw Data
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="formatDropdown">
+        <li><a class="dropdown-item" href="#" onclick="showRawData('turtle')">View Turtle</a></li>
+        <li><a class="dropdown-item" href="#" onclick="showRawData('json')">View JSON</a></li>
+      </ul>
     </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="https://am.dbpedia.data.dice-research.org/ui" target="_blank">SPARQL Endpoint</a></li>
+        </ul>
+    </div>
+  </div>
 </nav>
 
 <div class="main-container">
@@ -149,7 +158,8 @@
                 grouped[predURI].values.push(objDisplay);
             });
 
-            document.getElementById("descriptionLine").innerHTML = `An Entity of Type : ${entityType || ""}, from Named Graph : <a href=\"http://am.dbpedia.org\" target=\"_blank\">http://am.dbpedia.org</a>, within Data Space : <a href=\"http://am.dbpedia.org\" target=\"_blank\">am.dbpedia.org</a>.`;
+            document.getElementById("descriptionLine").innerHTML =
+              `An Entity of Type : ${entityType || ""}, from Named Graph : <a href="http://am.dbpedia.org" target="_blank">http://am.dbpedia.org</a>, within Data Space : <a href="http://am.dbpedia.org" target="_blank">am.dbpedia.org</a>.`;
 
             for (const pred in grouped) {
                 const row = grouped[pred];
@@ -165,6 +175,29 @@
             document.getElementById("results").innerHTML = `<tr><td colspan="2">Error loading data</td></tr>`;
             console.error(err);
         });
+
+    function showRawData(format) {
+  const formatMap = {
+    turtle: 'text/turtle',
+    json: 'application/json'
+  };
+
+  const queryURL = endpoint + '?query=' + encodeURIComponent(`DESCRIBE <${decodedURI}>`) + '&format=' + encodeURIComponent(formatMap[format]);
+
+  fetch(queryURL)
+    .then(res => res.text())
+    .then(text => {
+      const tbody = document.getElementById("results");
+      tbody.innerHTML = `<tr><td colspan='2'><pre style='white-space: pre-wrap; word-break: break-word;'>${text.replace(/[&<>]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[tag]))}</pre></td></tr>`;
+    })
+    .catch(err => {
+      const tbody = document.getElementById("results");
+      tbody.innerHTML = `<tr><td colspan='2'>Failed to load data: ${err}</td></tr>`;
+      console.error(err);
+    });
+};
+
+    
 </script>
 </body>
 </html>
