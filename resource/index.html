@@ -9,21 +9,19 @@
     <style>
         body {
             font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: white;
             padding-top: 70px;
         }
         .page-header {
-            background-color: #002a43;
-            color: white;
             padding: 20px;
             margin-bottom: 20px;
+            text-align: left;
         }
         .table-container {
             margin: 20px;
         }
         .footer {
-            background-color: #002a43;
-            color: white;
+            color: #333;
             padding: 20px;
             text-align: center;
         }
@@ -31,10 +29,15 @@
             max-height: 30px;
             margin: 0 10px;
         }
+        img.inline-img {
+            max-height: 100px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top border-bottom">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">DBpedia Am</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -50,12 +53,13 @@
     </div>
 </nav>
 
-<div class="page-header text-center">
+<div class="page-header">
     <h1 id="title">Loading Resource...</h1>
     <p id="resourceLink"></p>
 </div>
 
 <div class="container table-container">
+    <h3>About:</h3>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -70,7 +74,7 @@
 </div>
 
 <div class="footer">
-    <p>Powered by DBpedia Am | <a href="https://am.dbpedia.data.dice-research.org/sparql" class="text-white" target="_blank">SPARQL</a></p>
+    <p>Powered by DBpedia Am | <a href="https://am.dbpedia.data.dice-research.org/sparql" target="_blank">SPARQL</a></p>
 </div>
 
 <script>
@@ -87,7 +91,7 @@
 
     document.getElementById("title").textContent = decodedURI.split('/').pop().replace(/_/g, ' ');
     document.getElementById("resourceLink").innerHTML =
-        `<a href="${decodedURI}" target="_blank" class="text-white">${decodedURI}</a>`;
+        `<a href="${decodedURI}" target="_blank">${decodedURI}</a>`;
 
     const query = `
         SELECT DISTINCT ?predicate ?object WHERE {
@@ -109,14 +113,27 @@
             }
 
             data.results.bindings.forEach(row => {
-                const pred = row.predicate.value;
-                const obj = row.object.value;
-                const objIsURI = row.object.type === "uri";
+                const predURI = row.predicate.value;
+                const predLabel = predURI.split('/').pop();
+
+                const obj = row.object;
+                let objDisplay;
+                if (obj.type === "uri") {
+                    const label = decodeURIComponent(obj.value.split('/').pop().replace(/_/g, ' '));
+                    const isImage = obj.value.match(/\.(jpg|jpeg|png|gif|svg)(\?.*)?$/i);
+                    if (isImage) {
+                        objDisplay = `<a href="${obj.value}" target="_blank"><img src="${obj.value}" class="inline-img" alt="Image"></a>`;
+                    } else {
+                        objDisplay = `<a href="${obj.value}" target="_blank">${label}</a>`;
+                    }
+                } else {
+                    objDisplay = obj.value;
+                }
 
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td><a href="${pred}" target="_blank">${pred}</a></td>
-                    <td>${objIsURI ? `<a href="${obj}" target="_blank">${obj}</a>` : obj}</td>
+                    <td><a href="${predURI}" target="_blank">${predLabel}</a></td>
+                    <td>${objDisplay}</td>
                 `;
                 tbody.appendChild(tr);
             });
