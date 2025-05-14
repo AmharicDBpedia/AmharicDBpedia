@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "The Amharic DBpedia Chapter"
+authors:
+  - family-names: Alemayehu
+    given-names: Hizkiel Mitiku
+    affiliation: Data Science Group (DICE), Heinz Nixdorf Institute, Paderborn University
+    email: hizkiel.alemayehu@uni-paderborn.de
+  - family-names: Taffa
+    given-names: Tilahun Abedissa
+    affiliation: Semantic Systems, University of Hamburg, Germany
+    email: tilahun.taffa@uni-hamburg.de
+  - family-names: Bayissa
+    given-names: Meti Adane
+    affiliation: Addis Ababa University, Ethiopia
+    email: bayissa.meti@gmail.com
+  - family-names: Zahera
+    given-names: Hamada M.
+    affiliation: Data Science Group (DICE), Heinz Nixdorf Institute, Paderborn University
+    email: hamada.zahera@uni-paderborn.de
+  - family-names: Usbeck
+    given-names: Ricardo
+    affiliation: AI and Explainability (AIX), Leuphana University Lüneburg, Germany
+    email: ricardo.usbeck@leuphana.de
+  - family-names: Ngonga Ngomo
+    given-names: Axel-Cyrille
+    affiliation: Data Science Group (DICE), Heinz Nixdorf Institute, Paderborn University
+    email: axel.ngonga@uni-paderborn.de
+version: "1.0.0"
+type: paper
