@@ -1,0 +1,135 @@
+/* Base theme tokens */
+:root {
+  --bg: #f4f4f4;
+  --text: #222;
+  --muted: #666;
+  --primary: #002a43;
+  --accent: #0056b3;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --link: #0d6efd;
+}
+
+/* Dark theme (toggled via html[data-theme="dark"]) */
+html[data-theme="dark"] {
+  --bg: #171717;
+  --text: #eaeaea;
+  --muted: #b3b3b3;
+  --primary: #0b2a3d;
+  --accent: #3ea0ff;
+  --card-bg: #1f1f1f;
+  --card-border: #2a2a2a;
+  --link: #8ab4ff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  padding-top: 74px; /* space for fixed header */
+}
+
+/* Navbar (fixed header) */
+.navbar {
+  background: var(--primary) !important;
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar {
+  color: #fff !important;
+}
+
+.dropdown-toggle {
+  color: #0e0d0d !important;
+}
+.navbar .nav-link.active {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+#app{
+    margin-top:-60px;
+    border:0px solid red;
+}
+/* Containers & Sections */
+.section {
+  padding: 48px 0;
+}
+
+.section h2 {
+  color: var(--text);
+  margin-bottom: 16px;
+  font-size: 1.75rem;
+}
+
+.lead {
+  color: var(--muted);
+  line-height: 1.7;
+  white-space: pre-line; /* render \n\n from JSON nicely */
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+.card img.card-img-top,
+.card .img-fluid {
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.card-link {
+  text-decoration: none;
+  color: var(--link);
+}
+
+/* Footer logos row */
+.footer-logos img {
+  max-height: 40px;
+  object-fit: contain;
+}
+
+/* Utility spacing for card grids */
+.grid-gap-20 {
+  gap: 20px;
+}
+
+.contributor-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 3px solid #eee;
+  margin-bottom: 10px;
+}
+
+
+
+/* Responsive tweaks */
+@media (max-width: 991px) {
+  body { padding-top: 66px; }
+}
+
+@media (max-width: 576px) {
+  .section h2 { font-size: 1.5rem; }
+}
