@@ -1,4 +1,4 @@
-{
+const contentData = {
   "languages": {
     "en": "English",
     "de": "Deutsch",

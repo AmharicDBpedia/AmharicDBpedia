@@ -9,9 +9,13 @@ const qs = (s, el = document) => el.querySelector(s);
 const qsa = (s, el = document) => [...el.querySelectorAll(s)];
 const t = (obj) => (obj && (obj[STATE.lang] || obj.en)) || '';
 
+// async function loadData() {
+//   const res = await fetch('data/content.json', { cache: 'no-store' });
+//   STATE.data = await res.json();
+// }
 async function loadData() {
-  const res = await fetch('data/content.json', { cache: 'no-store' });
-  STATE.data = await res.json();
+  // Previously fetched JSON, now we already have CONTENT loaded
+  STATE.data = contentData;
 }
 
 function setHtmlLang() {
