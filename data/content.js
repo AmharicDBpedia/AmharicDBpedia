@@ -42,7 +42,7 @@ const contentData = {
         "de": "Hier finden Sie ausführliche Dokumentationen und Richtlinien, die Ihnen helfen, DBpedia optimal zu nutzen. Egal, ob Sie gerade erst anfangen oder Ihr Verständnis der technischen und theoretischen Aspekte vertiefen möchten, wir haben das Richtige für Sie. \n\n Unsere Dokumentation ist für Benutzer aller Erfahrungsstufen zugänglich und enthält Schritt-für-Schritt-Anleitungen für die Abfrage von DBpedia, auch für Anfänger. \n\n Wenn Sie Fragen haben, die in unserer Dokumentation nicht beantwortet werden, oder wenn Sie Verbesserungsvorschläge haben, können Sie sich gerne an uns wenden.",
         "am": "ከ DBpedia ምርጡን እንድትጠቀሙ የሚያግዙ ዝርዝር ሰነዶችን እና መመሪያዎችን እዚህ ያገኛሉ። ገና እየጀመርክም ይሁን ስለ ቴክኒካል እና ንድፈ-ሀሳባዊ ገጽታዎች ያለህን ግንዛቤ ለማሳደግ እየፈለግህ ነው፣ ሽፋን አግኝተናል። \n\n ጀማሪ ቢሆኑም እንኳ DBpedia እንዴት እንደሚጠይቁ የደረጃ በደረጃ መመሪያዎችን ይዘን የእኛ ሰነድ በሁሉም ደረጃ ላሉ ተጠቃሚዎች ተደራሽ እንዲሆን የተቀየሰ ነው። \n\nበእኛ ሰነድ ውስጥ ያልተመለሱ ጥያቄዎች ካሉዎት ወይም የማሻሻያ ጥቆማዎች ካሎት፣ እንዲያገኙን እናበረታታዎታለን።"
       },
-      "link":"https://github.com/AmharicDBpedia/AmharicDBpedia/blob/GSOC2025/documentation/GSoC%202025%20Documentation%20v1.0.pdf"
+      "link":"https://github.com/AmharicDBpedia/AmharicDBpedia/wiki"
     },
 
     "Resources": {
